@@ -4,7 +4,7 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0x6f3f635A9762B47954229Ea479b4541eAF402A6A";
+const contractAddress = "0x86CF8Ce0b2Ae78Eb1B0b28A15B2Ffb4DeF2e2f5c";
 
 //load smart contract from Ethereum blockchain using web3 lib
 export const helloWorldContract = new web3.eth.Contract(

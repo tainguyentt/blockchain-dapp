@@ -20,6 +20,21 @@ npm install
 npm start
 ```
 
+## Hosting in Firebase
+- Create Firebase project
+```
+firebase login
+firebase init
+```
+- Build project
+```
+yarn build
+```
+- Deploy to Firebase
+```
+firebase deploy
+```
+
 ## Notes
 - Alchemy Web3: 
 a wrapper around Web3.js, providing enhanced API methods and other crucial benefits to make your life as a web3 developer easier. It is designed to require minimal configuration so you can start using it in your app right away!

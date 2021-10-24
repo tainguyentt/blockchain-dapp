@@ -27,4 +27,5 @@ yarn-error.log*
 # solidity
 solidity-stuff/
 
-#env
+#firebase
+.firebase/
