@@ -20,7 +20,39 @@ export const loadCurrentMessage = async () => {
 
 //connect dApp to Metamask wallet
 export const connectWallet = async () => {
-
+    //when Metamask is installed
+    if (window.ethereum) {
+        try {
+            const addressArray = await window.ethereum.request({
+                method: "eth_requestAccounts",
+            });
+            const obj = {
+                status: "👆🏽 Write a message in the text-field above",
+                address: addressArray[0],
+            }
+        } catch (err) {
+            return {
+                address: "",
+                status: "😥 " + err.message,
+            };
+        }
+    } else {
+        //when Metamask is not installed
+        return {
+            address: "",
+            status: (
+                <span>
+                    <p>
+                        {" "}
+                        🦊 {" "}
+                        <a target="_blank" href={`https://metamask.io/download.html`}>
+                            You must install Metamask, a virtual Ethereum wallet, in your browser.
+                        </a>
+                    </p>
+                </span>
+            )
+        };
+    }
 };
 
 //check if Metamask wallet is connected to dApp or not

@@ -45,6 +45,9 @@ const HelloWorld = () => {
 
   //connect the Metamask wallet to dApp
   const connectWalletPressed = async () => {
+    const walletResponse = await connectWallet();
+    setStatus(walletResponse.status);
+    setMessage(walletResponse.message);
   };
 
   //user want to update message stored in smart contract
