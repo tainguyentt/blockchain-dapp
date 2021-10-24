@@ -21,27 +21,35 @@ const HelloWorld = () => {
   useEffect(async () => {
     const message = await loadCurrentMessage();
     setMessage(message);
+    addSmartContractListener();
   }, []); //called only once
 
   //watch for contract UpdateMessages event
   //update UI when the message in contract is changed
-  function addSmartContractListener() { //TODO: implement
-    
+  function addSmartContractListener() {
+    helloWorldContract.events.UpdatedMessages({}, (error, data) => {
+      if (error) {
+        setStatus("😥 " + error.message);
+      } else {
+        setMessage(data.returnValues[1]);
+        setNewMessage("");
+        setStatus("🎉 Your message has been updated!");
+      }
+    });
   }
 
   //detect changes in user's Metamask wallet state e.g. disconnect, switch addresses
   function addWalletListener() { //TODO: implement
-    
+
   }
 
   //connect the Metamask wallet to dApp
-  const connectWalletPressed = async () => { //TODO: implement
-    
+  const connectWalletPressed = async () => {
   };
 
   //user want to update message stored in smart contract
   const onUpdatePressed = async () => { //TODO: implement
-    
+
   };
 
   //the UI of our component
