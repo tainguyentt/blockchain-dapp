@@ -24,12 +24,13 @@ export const connectWallet = async () => {
     if (window.ethereum) {
         try {
             const addressArray = await window.ethereum.request({
-                method: "eth_requestAccounts",
+                method: "eth_requestAccounts", //open Metamask for the user to connect
             });
             const obj = {
                 status: "👆🏽 Write a message in the text-field above",
                 address: addressArray[0],
             }
+            return obj;
         } catch (err) {
             return {
                 address: "",
@@ -38,26 +39,52 @@ export const connectWallet = async () => {
         }
     } else {
         //when Metamask is not installed
-        return {
-            address: "",
-            status: (
-                <span>
-                    <p>
-                        {" "}
-                        🦊 {" "}
-                        <a target="_blank" href={`https://metamask.io/download.html`}>
-                            You must install Metamask, a virtual Ethereum wallet, in your browser.
-                        </a>
-                    </p>
-                </span>
-            )
-        };
+        return unavailableMetamaskInfo;
     }
 };
 
 //check if Metamask wallet is connected to dApp or not
 export const getCurrentWalletConnected = async () => {
+    if (window.ethereum) {
+        try {
+            const addressArray = await window.ethereum.request({
+                method: "eth_accounts", //return Metamask addresses currently connected to dApp
+            });
+            if (addressArray.length > 0) {
+                return {
+                    address: addressArray[0],
+                    status: "👆🏽 Write a message in the text-field above."
+                };
+            } else {
+                return {
+                    address: "",
+                    status: "🦊 Connect to Metamask using the top right button.",
+                };
+            }
+        } catch (err) {
+            return {
+                address: "",
+                status: "😥 " + err.message,
+            };
+        }
+    } else {
+        return unavailableMetamaskInfo;
+    }
+};
 
+export const unavailableMetamaskInfo = {
+    address: "",
+    status: (
+        <span>
+            <p>
+                {" "}
+                🦊 {" "}
+                <a target="_blank" href={`https://metamask.io/download.html`}>
+                    You must install Metamask, a virtual Ethereum wallet, in your browser.
+                </a>
+            </p>
+        </span>
+    )
 };
 
 //update message of smart contract, this tx is signed by Metamask wallet

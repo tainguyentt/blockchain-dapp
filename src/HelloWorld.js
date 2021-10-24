@@ -8,8 +8,6 @@ import {
   getCurrentWalletConnected,
 } from "./util/interact.js";
 
-import alchemylogo from "./alchemylogo.svg";
-
 const HelloWorld = () => {
   //state variables
   const [walletAddress, setWallet] = useState(""); //store user's wallet address
@@ -19,9 +17,18 @@ const HelloWorld = () => {
 
   //React hook, called after the component is rendered
   useEffect(async () => {
+    //load current stored message in smart contract
     const message = await loadCurrentMessage();
     setMessage(message);
+
+    //listen for any change from smart contract
     addSmartContractListener();
+
+    //load status and address of wallet if connected
+    const {address, status} = await getCurrentWalletConnected();
+    setWallet(address);
+    setStatus(status);
+
   }, []); //called only once
 
   //watch for contract UpdateMessages event
@@ -47,7 +54,7 @@ const HelloWorld = () => {
   const connectWalletPressed = async () => {
     const walletResponse = await connectWallet();
     setStatus(walletResponse.status);
-    setMessage(walletResponse.message);
+    setWallet(walletResponse.address);
   };
 
   //user want to update message stored in smart contract
@@ -58,7 +65,7 @@ const HelloWorld = () => {
   //the UI of our component
   return (
     <div id="container">
-      <img id="logo" src={alchemylogo}></img>
+      {/* <img id="logo" src={alchemylogo}></img> */}
 
       {/* Connect to Metamask wallet */}
       <button id="walletButton" onClick={connectWalletPressed}>
