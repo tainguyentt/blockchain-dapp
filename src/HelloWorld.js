@@ -17,22 +17,24 @@ const HelloWorld = () => {
   const [newMessage, setNewMessage] = useState(""); //store new message that will be added
 
   //React hook, called after the component is rendered
-  useEffect(async () => {
-    //load current stored message in smart contract
-    const message = await loadCurrentMessage();
-    setMessage(message);
+  useEffect(() => {
+    async function hook() {
+      //load current stored message in smart contract
+      const message = await loadCurrentMessage();
+      setMessage(message);
 
-    //listen to any change from smart contract
-    addSmartContractListener();
+      //listen to any change from smart contract
+      addSmartContractListener();
 
-    //load status and address of wallet if connected
-    const { address, status } = await getCurrentWalletConnected();
-    setWallet(address);
-    setStatus(status);
+      //load status and address of wallet if connected
+      const { address, status } = await getCurrentWalletConnected();
+      setWallet(address);
+      setStatus(status);
 
-    //listen to any change from Metamask wallet
-    addWalletListener();
-
+      //listen to any change from Metamask wallet
+      addWalletListener();
+    };
+    hook();
   }, []); //called only once
 
   //watch for contract UpdateMessages event

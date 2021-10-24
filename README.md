@@ -1,5 +1,7 @@
 # Blockchain Dapp
-A simple dApp with a React frontend to connect to the smart contract created at [blockchain-smartcontract](https://github.com/tainguyentt/blockchain-smartcontract) using Metamask and Web3 tools.
+A simple dApp with a React frontend to connect to the smart contract created at [blockchain-smartcontract](https://github.com/tainguyentt/blockchain-smartcontract) using Metamask and Web3 tools, following the blockchain series of Alchemy.
+
+![UI](frontend.png)
 
 ## Architecture Diagram
 - Connect a Metamask wallet to your dApp project
