@@ -6,6 +6,7 @@ import {
   updateMessage,
   loadCurrentMessage,
   getCurrentWalletConnected,
+  unavailableMetamaskInfo,
 } from "./util/interact.js";
 
 const HelloWorld = () => {
@@ -21,13 +22,16 @@ const HelloWorld = () => {
     const message = await loadCurrentMessage();
     setMessage(message);
 
-    //listen for any change from smart contract
+    //listen to any change from smart contract
     addSmartContractListener();
 
     //load status and address of wallet if connected
-    const {address, status} = await getCurrentWalletConnected();
+    const { address, status } = await getCurrentWalletConnected();
     setWallet(address);
     setStatus(status);
+
+    //listen to any change from Metamask wallet
+    addWalletListener();
 
   }, []); //called only once
 
@@ -46,8 +50,20 @@ const HelloWorld = () => {
   }
 
   //detect changes in user's Metamask wallet state e.g. disconnect, switch addresses
-  function addWalletListener() { //TODO: implement
-
+  function addWalletListener() {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length > 0) {
+          setWallet(accounts[0]);
+          setStatus("👆🏽 Write a message in the text-field above.");
+        } else {
+          setWallet("");
+          setStatus("🦊 Connect to Metamask using the top right button.");
+        }
+      })
+    } else {
+      setStatus(unavailableMetamaskInfo);
+    }
   }
 
   //connect the Metamask wallet to dApp
