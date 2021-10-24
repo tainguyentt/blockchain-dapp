@@ -89,5 +89,51 @@ export const unavailableMetamaskInfo = {
 
 //update message of smart contract, this tx is signed by Metamask wallet
 export const updateMessage = async (address, message) => {
+    //check if Metamask is installed and connected
+    if (!window.ethereum | address === null) {
+        return {
+            status: "💡 Connect your Metamask wallet to update the message on the blockchain.",
+        };
+    }
 
+    //validate input data
+    if (message.trim() === "") {
+        return {
+            status: "❌ Your message cannot be an empty string.",
+        };
+    }
+
+    //create a transaction
+    const transactionParams = {
+        to: contractAddress,
+        from: address,
+        data: helloWorldContract.methods.update(message).encodeABI(),
+    };
+
+    //submit transaction
+    try {
+        const txHash = await window.ethereum.request({//how Metamask submits transaction? probably Metamask runs a full node
+            method: "eth_sendTransaction",
+            params: [transactionParams],
+        });
+
+        return {
+            status: (
+                <span>
+                    ✅{" "}
+                    <a target="_blank" href={`https://ropsten.etherscan.io/tx/${txHash}`}>
+                        View the status of your transaction on Etherscan!
+                    </a>
+                    <br />
+                    ℹ️ Once the transaction is verified by the network, the message will
+                    be updated automatically.
+                </span>
+            ),
+        };
+
+    } catch (error) {
+        return {
+            status: "😥 " + error.message,
+        };
+    }
 };
